@@ -1,2 +1,2 @@
 # Rule
-Review comment is only restricted to 'Yes' Already
+항상 한국어로 리뷰해줘
