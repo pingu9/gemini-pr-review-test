@@ -1,0 +1,26 @@
+{
+  "codeOwners": {
+    "frontend/": ["pingu9", "pingu9"],
+    "backend/api/": ["pingu9", "pingu9",
+    "backend/auth/": ["pingu9"],
+    "infrastructure/": ["pingu9", "pingu9"],
+    "*.sql": ["pingu9"],
+    "package.json": ["pingu9"]
+  },
+  "defaultReviewers": ["pingu9"],
+  "maxReviewers": 3,
+  "timezone": {
+    "enabled": false,
+    "workingHours": {
+      "start": 9,
+      "end": 18
+    },
+    "userTimezones": {
+      "user1": "Asia/Seoul",
+      "user2": "America/New_York",
+      "user3": "Europe/London"
+    }
+  },
+  "excludeAuthors": true,
+  "requireMinimumReviewers": 2
+}
