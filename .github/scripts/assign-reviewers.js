@@ -136,13 +136,13 @@ function getCodeOwners(filename, codeOwners) {
   return [...new Set(reviewers)]; // 중복 제거
 }
 
-// Git blame으로 최근 수정자 찾기 (개선된 버전)
+// Git blame으로 최근 수정자 찾기 (GraphQL 사용)
 async function getBlameReviewers(github, owner, repo, filepath, baseSha, prAuthor, core) {
   const reviewers = new Set();
   
   try {
-    // Git blame 정보 가져오기 - 올바른 방법
-    const blameCommand = `
+    // GraphQL 쿼리로 Git blame 정보 가져오기
+    const blameQuery = `
       query($owner: String!, $repo: String!, $path: String!, $ref: String!) {
         repository(owner: $owner, name: $repo) {
           object(expression: $ref) {
@@ -150,6 +150,7 @@ async function getBlameReviewers(github, owner, repo, filepath, baseSha, prAutho
               blame(path: $path) {
                 ranges {
                   commit {
+                    authoredDate
                     author {
                       user {
                         login
@@ -167,7 +168,9 @@ async function getBlameReviewers(github, owner, repo, filepath, baseSha, prAutho
       }
     `;
 
-    const blameData = await github.graphql(blameCommand, {
+    core.info(`Getting blame for ${filepath} at ${baseSha}`);
+    
+    const blameData = await github.graphql(blameQuery, {
       owner,
       repo,
       path: filepath,
@@ -175,22 +178,30 @@ async function getBlameReviewers(github, owner, repo, filepath, baseSha, prAutho
     });
 
     if (blameData?.repository?.object?.blame?.ranges) {
-      // 최근 커밋 순으로 정렬
+      // 최근 커밋 순으로 정렬 (age가 낮을수록 최근)
       const ranges = blameData.repository.object.blame.ranges
         .filter(range => range.commit.author.user?.login)
         .sort((a, b) => a.age - b.age);
+
+      core.info(`Found ${ranges.length} blame ranges for ${filepath}`);
 
       // 최근 수정자 2명 추출
       for (const range of ranges) {
         const author = range.commit.author.user.login;
         if (author && author !== prAuthor) {
           reviewers.add(author);
+          core.info(`Found recent contributor: ${author}`);
           if (reviewers.size >= 2) break;
         }
       }
     }
   } catch (error) {
-    core.warning(`Could not get blame for ${filepath}: ${error.message}`);
+    // 파일이 새로 생성된 경우나 blame을 가져올 수 없는 경우
+    if (error.message.includes('path does not exist')) {
+      core.info(`${filepath} is a new file, skipping blame`);
+    } else {
+      core.warning(`Could not get blame for ${filepath}: ${error.message}`);
+    }
   }
   
   return Array.from(reviewers);
