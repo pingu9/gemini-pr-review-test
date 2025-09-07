@@ -1,7 +1,7 @@
 {
   "codeOwners": {
     "frontend/": ["pingu9", "pingu9"],
-    "backend/api/": ["pingu9", "pingu9",
+    "backend/api/": ["pingu9", "pingu9"],
     "backend/auth/": ["pingu9"],
     "infrastructure/": ["pingu9", "pingu9"],
     "*.sql": ["pingu9"],
