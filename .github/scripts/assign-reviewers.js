@@ -7,6 +7,16 @@ module.exports = async ({github, context, core}) => {
     // 설정 파일 읽기
     const configPath = path.join('.github', 'reviewers-config.json');
     const config = JSON.parse(await fs.readFile(configPath, 'utf8'));
+    
+    // 설정 검증
+    if (!config.minReviewers) {
+      core.warning('minReviewers not defined in config, defaulting to 2');
+      config.minReviewers = 2;
+    }
+    if (!config.maxReviewers) {
+      core.warning('maxReviewers not defined in config, defaulting to 3');
+      config.maxReviewers = 3;
+    }
 
     const { owner, repo } = context.repo;
     const prNumber = context.payload.pull_request.number;
@@ -14,6 +24,7 @@ module.exports = async ({github, context, core}) => {
     const baseSha = context.payload.pull_request.base.sha;
 
     core.info(`Processing PR #${prNumber} by ${prAuthor}`);
+    core.info(`Config: min=${config.minReviewers}, max=${config.maxReviewers}`);
 
     // PR에서 변경된 파일 목록 가져오기
     const { data: files } = await github.rest.pulls.listFiles({
@@ -46,7 +57,7 @@ module.exports = async ({github, context, core}) => {
     }
 
     // 3단계: 여전히 최소 리뷰어 수에 못 미치면 기본 리뷰어 추가
-    if (reviewers.size < config.minReviewers) {
+    if (reviewers.size < config.minReviewers && config.defaultReviewers) {
       const needed = config.minReviewers - reviewers.size;
       const defaults = config.defaultReviewers.slice(0, needed);
       defaults.forEach(r => reviewers.add(r));
