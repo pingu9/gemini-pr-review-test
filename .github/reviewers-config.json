@@ -21,6 +21,6 @@
       "user3": "Europe/London"
     }
   },
-  "excludeAuthors": true,
+  "excludeAuthors": false,
   "requireMinimumReviewers": 2
 }
