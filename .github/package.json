@@ -1,0 +1,12 @@
+{
+  "name": "auto-reviewer-assignment",
+  "version": "1.0.0",
+  "description": "Automated PR reviewer assignment",
+  "scripts": {
+    "assign-reviewers": "node .github/scripts/assign-reviewers.js"
+  },
+  "dependencies": {
+    "@octokit/rest": "^20.0.2",
+    "minimatch": "^9.0.3"
+  }
+}
