@@ -3,6 +3,10 @@ name: Auto Assign Reviewers
 on:
   pull_request:
     types: [opened, ready_for_review, synchronize]  # draft→ready 전환 시에도 실행
+    
+permissions:
+  contents: read        # 코드 읽기 (blame 분석용)
+  pull-requests: write  # PR 리뷰어 지정
 
 jobs:
   assign-reviewers:
