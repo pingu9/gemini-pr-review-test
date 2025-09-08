@@ -2,7 +2,7 @@ name: Auto Assign Reviewers
 
 on:
   pull_request:
-    types: [opened, ready_for_review]  # draft→ready 전환 시에도 실행
+    types: [opened, ready_for_review, synchronize]  # draft→ready 전환 시에도 실행
 
 jobs:
   assign-reviewers:

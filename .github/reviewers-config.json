@@ -1,13 +1,13 @@
 {
   "codeOwners": {
-    "frontend/": ["pingu9", "pingu9"],
-    "backend/api/": ["pingu9", "pingu9"],
-    "backend/auth/": ["pingu9"],
-    "infrastructure/": ["pingu9", "pingu9"],
-    "*.sql": ["pingu9"],
-    "package.json": ["pingu9"]
+    "frontend/": ["binary-ho", "binary-ho"],
+    "backend/api/": ["binary-ho", "binary-ho"],
+    "backend/auth/": ["binary-ho"],
+    "infrastructure/": ["binary-ho", "binary-ho"],
+    "*.sql": ["binary-ho"],
+    "package.json": ["binary-ho"]
   },
-  "defaultReviewers": ["pingu9"],
+  "defaultReviewers": ["binary-ho"],
   "minReviewers": 1,
   "maxReviewers": 3,
   "timezone": {
