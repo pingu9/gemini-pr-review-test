@@ -8,6 +8,7 @@
     "package.json": ["pingu9"]
   },
   "defaultReviewers": ["pingu9"],
+  "minReviewers": 1,
   "maxReviewers": 3,
   "timezone": {
     "enabled": false,
@@ -22,5 +23,5 @@
     }
   },
   "excludeAuthors": false,
-  "requireMinimumReviewers": 2
+  "skipDraft": true
 }
