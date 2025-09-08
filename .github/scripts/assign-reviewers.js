@@ -176,7 +176,7 @@ async function getBlameReviewers(github, owner, repo, filepath, baseSha, prAutho
       path: filepath,
       ref: baseSha
     });
-    console.log("blameData: ", blameData.repository.object.blame);
+    console.log("blameData: ", blameData.repository.object.blame.ranges.get(0).commit);
 
     if (blameData?.repository?.object?.blame?.ranges) {
       // 최근 커밋 순으로 정렬 (age가 낮을수록 최근)
